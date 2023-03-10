@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use \App\Http\Controllers\GuzTestController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -13,14 +15,20 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+// Route::get('/', function () {
+//     return view('welcome');
+// });
+
+Route::post('pay',[\App\Http\Controllers\PaymentController::class,'initialize'])->name('pay');
+Route::get('check',function () {
+    return response()->json([
+        'status'=>true,
+        'msg'=>'working'
+    ]);
 });
-Route::get('about',function(){
-    $data="hello world";
-    return view('about',compact('data'));
-});
+Route::get('callback/{reference}',[\App\Http\Controllers\PaymentController::class,'callback'])->name('callback');
 
 Auth::routes();
+Route::get('/',[GuzTestController::class,'getPyamentUrl']);
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+// Route::get('/home', [App\Http\Controllers\HomeController::class, ''])->name('home');
